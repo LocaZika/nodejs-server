@@ -36,8 +36,8 @@ app.use(express.static(path.join(__dirname, "public")));
 // Declera router
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
-app.use("/products", productRouter);
+app.use("/", usersRouter);
+app.use("/", productRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

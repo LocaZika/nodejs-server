@@ -1,6 +1,54 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-
+// backup
+// tabs: {
+//   overview: {
+//     title: String,
+//     info: {
+//       title: String,
+//       items: Array,
+//     },
+//     feature: [
+//       {
+//         title: String,
+//         items: Array,
+//       },
+//     ],
+//   },
+//   technical: {
+//     title: String,
+//     info: {
+//       title: String,
+//       items: Array,
+//     },
+//     feature: {
+//       title: String,
+//       items: Array,
+//     },
+//   },
+//   featureAndOption: {
+//     title: String,
+//     info: {
+//       title: String,
+//       items: Array,
+//     },
+//     feature: {
+//       title: String,
+//       items: Array,
+//     },
+//   },
+//   location: {
+//     title: String,
+//     info: {
+//       title: String,
+//       items: Array,
+//     },
+//     feature: {
+//       title: String,
+//       items: Array,
+//     },
+//   },
+// },
 const product = {
   name: String,
   brand: String,
@@ -19,54 +67,7 @@ const product = {
   images: Array,
   createAt: Date,
   updateAt: Date,
-  tabs: {
-    overview: {
-      title: String,
-      info: {
-        title: String,
-        items: Array,
-      },
-      feature: [
-        {
-          title: String,
-          items: Array,
-        },
-      ],
-    },
-    technical: {
-      title: String,
-      info: {
-        title: String,
-        items: Array,
-      },
-      feature: {
-        title: String,
-        items: Array,
-      },
-    },
-    featureAndOption: {
-      title: String,
-      info: {
-        title: String,
-        items: Array,
-      },
-      feature: {
-        title: String,
-        items: Array,
-      },
-    },
-    location: {
-      title: String,
-      info: {
-        title: String,
-        items: Array,
-      },
-      feature: {
-        title: String,
-        items: Array,
-      },
-    },
-  },
+  tabs: Object,
 };
 
 const productSchema = new Schema(product, { timestamps: true });

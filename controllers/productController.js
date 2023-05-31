@@ -3,20 +3,34 @@ const Product = require("../models/product");
 module.exports = {
   index: async (req, res) => {
     // {brand, model, bodyStyle, transmission, fuelType, seats, keyword}
-    const { brand, model, bodyStyle, transmission, fuelType, seats, keyword } = req.query;
+    const { brand, model, bodyStyle, transmission, fuelType, seats, keyword, limit } = req.query;
+    const defLimit = limit ?? 9;
     let query = {};
+    const selectedFields = {
+      name: 1,
+      gearboxType: 1,
+      mpg: 1,
+      hp: 1,
+      yearOfManufacture: 1,
+      images: 1,
+      status: 1,
+      price: 1,
+    };
     if (req.query?.length !== true) {
-      const products = await Product.find().sort({ price: "desc" });
+      const products = await Product.find()
+        .select(selectedFields)
+        .limit(defLimit)
+        .sort({ price: "desc" });
       res.json(products);
     } else {
-      const defBrand = brand ?? false;
+      const defBrand = brand ?? "";
       const defModel = model ?? false;
       const defBodyStyle = bodyStyle ?? false;
       const defTransmission = transmission ?? false;
       const defFuelType = fuelType ?? false;
       const defSeats = seats ?? false;
       const defKeyword = keyword ?? false;
-      if (defBrand !== false) {
+      if (defBrand !== "") {
         query.brand = defBrand;
       }
       if (defModel !== false) {
@@ -34,16 +48,19 @@ module.exports = {
       if (defSeats !== false) {
         query.seats = defSeats;
       }
-      if (defKeyword !== false) {
+      if (defKeyword !== false && defKeyword !== "") {
         query.keyword = defKeyword;
       }
-      const products = await Product.find(query).exec();
+      const products = await Product.find(query)
+        .selected(selectedFields)
+        .limit(defLimit)
+        .sort({ price: "desc" });
       res.json(products);
     }
   },
   get: async (req, res) => {
     const { id } = req.params;
-    const product = await Product.findById(id).exec();
+    const product = await Product.findById(id);
     res.json(product);
     res.status(404).send("Product not found");
   },
