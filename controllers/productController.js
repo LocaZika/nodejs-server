@@ -3,8 +3,12 @@ const Product = require("../models/product");
 module.exports = {
   index: async (req, res) => {
     // {brand, model, bodyStyle, transmission, fuelType, seats, keyword}
-    const { brand, model, bodyStyle, transmission, fuelType, seats, keyword, limit } = req.query;
+    const { brand, model, bodyStyle, transmission, fuelType, seats, keyword, limit, page } =
+      req.query;
     const defLimit = limit ?? 9;
+
+    const start = (page - 1) * defLimit;
+
     let query = {};
     const selectedFields = {
       name: 1,
@@ -16,12 +20,23 @@ module.exports = {
       status: 1,
       price: 1,
     };
-    if (req.query?.length !== true) {
+
+    if (!req.query) {
+      // console.log("a");
+      //get all
+      const count = await Product.find().count();
+
       const products = await Product.find()
         .select(selectedFields)
         .limit(defLimit)
-        .sort({ price: "desc" });
-      res.json(products);
+        .skip(start ?? 0)
+        .sort({ price: "desc" })
+        .exec();
+
+      res.json({
+        count: count,
+        data: products,
+      });
     } else {
       const defBrand = brand ?? "";
       const defModel = model ?? false;
@@ -51,11 +66,17 @@ module.exports = {
       if (defKeyword !== false && defKeyword !== "") {
         query.keyword = defKeyword;
       }
+      const count = await Product.find(query).count();
       const products = await Product.find(query)
-        .selected(selectedFields)
+        .select(selectedFields)
         .limit(defLimit)
-        .sort({ price: "desc" });
-      res.json(products);
+        .skip(start ?? 0)
+        .sort({ price: "desc" })
+        .exec();
+      res.json({
+        count: count,
+        data: products,
+      });
     }
   },
   get: async (req, res) => {
