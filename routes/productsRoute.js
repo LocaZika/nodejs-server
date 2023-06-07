@@ -3,10 +3,10 @@ const router = express.Router();
 const productController = require("../controllers/productController");
 
 // GET products
-router.get("/products", productController.index);
-router.get("/products/:id", productController.get);
+router.get("/", productController.index);
+router.get("/:id", productController.get);
 // POST products
-router.post("/products", productController.post);
+router.post("/", productController.post);
 // PATCH products
 // router.patch("/products", productController.patch);
 

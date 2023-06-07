@@ -81,9 +81,15 @@ module.exports = {
   },
   get: async (req, res) => {
     const { id } = req.params;
-    const product = await Product.findById(id);
-    res.json(product);
-    res.status(404).send("Product not found");
+    const product = await Product.findById(id).exec();
+    if (product) {
+      res.json(product);
+      console.log("a");
+    } else {
+      console.log("b");
+      res.status(404).send("Product not found");
+      return;
+    }
   },
   post: async (req, res) => {
     const {
