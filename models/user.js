@@ -5,6 +5,7 @@ const users = {
   name: String,
   email: String,
   password: String,
+  verification: Number,
   createAt: Date,
   updateAt: Date,
 };
