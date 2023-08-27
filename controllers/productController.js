@@ -3,8 +3,7 @@ const Product = require("../models/product");
 module.exports = {
   index: async (req, res) => {
     // {brand, model, bodyStyle, transmission, fuelType, seats, keyword}
-    const { brand, model, bodyStyle, transmission, fuelType, seats, keyword, limit, page } =
-      req.query;
+    const { brand, model, bodyStyle, transmission, fuelType, seats, q, limit, page } = req.query;
     const defLimit = limit ?? 9;
 
     const start = (page - 1) * defLimit;
@@ -25,7 +24,6 @@ module.exports = {
       // console.log("a");
       //get all
       const count = await Product.find().count();
-
       const products = await Product.find()
         .select(selectedFields)
         .limit(defLimit)
@@ -44,7 +42,7 @@ module.exports = {
       const defTransmission = transmission ?? false;
       const defFuelType = fuelType ?? false;
       const defSeats = seats ?? false;
-      const defKeyword = keyword ?? false;
+      const defKeyword = q ?? false;
       if (defBrand !== "") {
         query.brand = defBrand;
       }
@@ -64,7 +62,7 @@ module.exports = {
         query.seats = defSeats;
       }
       if (defKeyword !== false && defKeyword !== "") {
-        query.keyword = defKeyword;
+        query.$text = { $search: defKeyword };
       }
       const count = await Product.find(query).count();
       const products = await Product.find(query)

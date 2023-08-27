@@ -3,11 +3,11 @@ const router = express.Router();
 const userController = require("../controllers/userController");
 
 // GET users
-router.get("/users", userController.index);
-router.get("/users/:id", userController.get);
+router.get("/", userController.index);
+router.get("/:id", userController.get);
 // POST users
-router.post("/users", userController.post);
+router.post("/", userController.post);
 // PATCH users
-router.patch("/users", userController.patch);
+router.patch("/", userController.patch);
 
 module.exports = router;

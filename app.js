@@ -7,6 +7,7 @@ var logger = require("morgan");
 var indexRouter = require("./routes/index");
 const usersRouter = require("./routes/usersRoute");
 const productRouter = require("./routes/productsRoute");
+const authRouter = require("./routes/authRoute");
 
 const mongoose = require("mongoose");
 
@@ -36,8 +37,9 @@ app.use(express.static(path.join(__dirname, "public")));
 // Declera router
 
 app.use("/", indexRouter);
-app.use("/", usersRouter);
+app.use("/users", usersRouter);
 app.use("/products", productRouter);
+// app.use("/auth", authRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
